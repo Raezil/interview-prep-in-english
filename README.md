@@ -77,62 +77,174 @@ They let you write functions and structs that operate on different types **witho
 package cache
 
 import (
-    "sync"
-    "time"
+	"sync"
+	"time"
 )
 
-// Cache is a basic in-memory key-value cache implementation.
+// Option configures the Cache at construction time.
+type Option func(*cacheConfig)
+
+type cacheConfig struct {
+	defaultTTL     time.Duration // 0 => no default expiry
+	cleanupEvery   time.Duration // 0 => disable background janitor
+}
+
+func WithDefaultTTL(ttl time.Duration) Option {
+	return func(c *cacheConfig) { c.defaultTTL = ttl }
+}
+
+func WithCleanupInterval(every time.Duration) Option {
+	return func(c *cacheConfig) { c.cleanupEvery = every }
+}
+
+type entry[V any] struct {
+	value    V
+	expireAt time.Time // zero => no expiry
+}
+
+// Cache is a basic in-memory key-value cache with optional TTL.
 type Cache[K comparable, V any] struct {
-    items map[K]V     // The map storing key-value pairs.
-    mu    sync.Mutex  // Mutex for controlling concurrent access to the cache.
+	mu           sync.RWMutex
+	items        map[K]entry[V]
+	defaultTTL   time.Duration
+	cleanupEvery time.Duration
+	stopCh       chan struct{}
+	doneCh       chan struct{}
 }
 
 // New creates a new Cache instance.
-func New[K comparable, V any]() *Cache[K, V] {
-    return &Cache[K, V]{
-        items: make(map[K]V),
-    }
+// Example: New[string,int](WithDefaultTTL(time.Minute), WithCleanupInterval(30*time.Second))
+func New[K comparable, V any](opts ...Option) *Cache[K, V] {
+	cfg := cacheConfig{}
+	for _, o := range opts {
+		o(&cfg)
+	}
+	c := &Cache[K, V]{
+		items:        make(map[K]entry[V]),
+		defaultTTL:   cfg.defaultTTL,
+		cleanupEvery: cfg.cleanupEvery,
+	}
+	if c.cleanupEvery > 0 {
+		c.startJanitor()
+	}
+	return c
 }
 
-// Set adds or updates a key-value pair in the cache.
+// Close stops the background janitor (if enabled).
+func (c *Cache[K, V]) Close() {
+	if c.stopCh == nil {
+		return
+	}
+	close(c.stopCh)
+	<-c.doneCh
+}
+
+// Set adds or updates a key-value pair using the cache's default TTL (if any).
 func (c *Cache[K, V]) Set(key K, value V) {
-    c.mu.Lock()
-    defer c.mu.Unlock()
-
-    c.items[key] = value
+	c.SetWithTTL(key, value, c.defaultTTL)
 }
 
-// Get retrieves the value associated with the given key from the cache. The bool
-// return value will be false if no matching key is found, and true otherwise.
-func (c *Cache[K, V]) Get(key K) (V, bool) {
-    c.mu.Lock()
-    defer c.mu.Unlock()
+// SetWithTTL adds or updates a key-value pair with a specific TTL.
+// ttl <= 0 means no expiration for this entry.
+func (c *Cache[K, V]) SetWithTTL(key K, value V, ttl time.Duration) {
+	var exp time.Time
+	if ttl > 0 {
+		exp = time.Now().Add(ttl)
+	}
 
-    value, found := c.items[key]
-    return value, found
+	c.mu.Lock()
+	c.items[key] = entry[V]{value: value, expireAt: exp}
+	c.mu.Unlock()
+}
+
+// Get retrieves the value by key. If the item is expired, it is removed and (zero,false) is returned.
+func (c *Cache[K, V]) Get(key K) (V, bool) {
+	// Fast path under read lock.
+	c.mu.RLock()
+	e, ok := c.items[key]
+	if !ok {
+		c.mu.RUnlock()
+		var zero V
+		return zero, false
+	}
+	expired := !e.expireAt.IsZero() && time.Now().After(e.expireAt)
+	value := e.value
+	c.mu.RUnlock()
+
+	if !expired {
+		return value, true
+	}
+
+	// Upgrade to write lock to delete if still expired.
+	c.mu.Lock()
+	if e2, ok2 := c.items[key]; ok2 && !e2.expireAt.IsZero() && time.Now().After(e2.expireAt) {
+		delete(c.items, key)
+	}
+	c.mu.Unlock()
+
+	var zero V
+	return zero, false
 }
 
 // Remove deletes the key-value pair with the specified key from the cache.
 func (c *Cache[K, V]) Remove(key K) {
-    c.mu.Lock()
-    defer c.mu.Unlock()
-
-    delete(c.items, key)
+	c.mu.Lock()
+	delete(c.items, key)
+	c.mu.Unlock()
 }
 
-// Pop removes and returns the value associated with the specified key from the cache.
+// Pop removes and returns the value associated with the key (if present and not expired).
 func (c *Cache[K, V]) Pop(key K) (V, bool) {
-    c.mu.Lock()
-    defer c.mu.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
-    value, found := c.items[key]
+	e, ok := c.items[key]
+	if !ok {
+		var zero V
+		return zero, false
+	}
 
-    // If the key is found, delete the key-value pair from the cache.
-    if found {
-        delete(c.items, key)
-    }
+	if !e.expireAt.IsZero() && time.Now().After(e.expireAt) {
+		delete(c.items, key)
+		var zero V
+		return zero, false
+	}
 
-    return value, found
+	delete(c.items, key)
+	return e.value, true
+}
+
+// ----- internals -----
+
+func (c *Cache[K, V]) startJanitor() {
+	c.stopCh = make(chan struct{})
+	c.doneCh = make(chan struct{})
+
+	go func() {
+		defer close(c.doneCh)
+		t := time.NewTicker(c.cleanupEvery)
+		defer t.Stop()
+
+		for {
+			select {
+			case <-t.C:
+				c.removeExpired()
+			case <-c.stopCh:
+				return
+			}
+		}
+	}()
+}
+
+func (c *Cache[K, V]) removeExpired() {
+	now := time.Now()
+	c.mu.Lock()
+	for k, e := range c.items {
+		if !e.expireAt.IsZero() && now.After(e.expireAt) {
+			delete(c.items, k)
+		}
+	}
+	c.mu.Unlock()
 }
 ```
 
