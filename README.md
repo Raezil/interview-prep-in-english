@@ -270,6 +270,11 @@ func (c *Cache[K, V]) removeExpired() {
 ### SQL join
 ![1m55Wqo](https://github.com/user-attachments/assets/04e9fd01-15eb-4cec-8f94-21ad7a683ba9)
 
+### Autoscaling
+- Horizontal autoscaling (HPA/KEDA): add/remove pods.
+- Vertical autoscaling (VPA): resize each pod’s CPU/memory.
+
+
 ### AWS
 https://aws.amazon.com/free/?trk=0a74b2b7-15b3-40f0-a1a9-39d406419e28&sc_channel=ps&ef_id=EAIaIQobChMI-
 
