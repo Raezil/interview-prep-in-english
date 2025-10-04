@@ -69,3 +69,7 @@ They let you write functions and structs that operate on different types **witho
 - **Server:** The generator creates a server interface; you implement it, usually by embedding `Unimplemented<YourService>Server` to preserve backward compatibility when adding methods.
 - **Client:** The generator creates a client stub; you call gRPC methods like regular functions — unary and streaming (server, client, bidirectional).
 - **Transport:** HTTP/2, binary Protobuf, and a strongly typed contract on both sides.
+
+
+### Cache
+- A cache is a small, fast key→value store you put in front of a slower system (disk, DB, network, compiler, etc.) to serve repeated reads quicker.
