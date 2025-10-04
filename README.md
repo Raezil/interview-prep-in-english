@@ -19,7 +19,7 @@
 - **Roots** become **gray**.  
 - Each object has a **list of references**.  
 - The algorithm traverses the lists:  
-  - Objects become **gray**,  
+  - Objects in the list become **gray**,  
   - When a list has been processed → the object becomes **black**.  
 - The process continues until all gray objects become **black**.  
 - The remaining white objects are garbage and are **freed from memory**.
