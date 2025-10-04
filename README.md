@@ -71,6 +71,24 @@ They let you write functions and structs that operate on different types **witho
 - **Client:** The generator creates a client stub; you call gRPC methods like regular functions — unary and streaming (server, client, bidirectional).
 - **Transport:** HTTP/2, binary Protobuf, and a strongly typed contract on both sides.
 
+## gRPC Streaming Overview
+
+* **Transport:** gRPC rides **HTTP/2**. Each RPC is a single HTTP/2 **stream** with: **headers (metadata) → messages (length‑prefixed protobuf frames) → trailers (status)**.
+
+* **RPC shapes:**
+
+  * **Unary:** 1 req → 1 res
+  * **Server‑streaming:** 1 req → many res
+  * **Client‑streaming:** many req → 1 res
+  * **Bidirectional:** many ↔ many (full‑duplex)
+
+* **Flow control / backpressure:** handled by **HTTP/2 windows**; in Go you feel it as blocking on `Send`/`Recv`.
+
+* **Cancellation / deadlines:** propagate via `context.Context`.
+
+* **Ordering:** messages are **in‑order** within an RPC. The **first error closes the stream**.
+
+
 
 ### Cache
 - A cache is a small, fast key→value store you put in front of a slower system (disk, DB, network, compiler, etc.) to serve repeated reads quicker.
