@@ -30,6 +30,10 @@
 - Outside generics, **any** behaves exactly like interface{}:
 	- it can hold a value of any dynamic type.
  	- You still need type assertions or type switches to work with the underlying concrete type.
+- Can an interface embed another interface in Go?
+	- Yes. In Go, an interface may embed zero or more other interfaces. The resulting interface’s method set is the union of all embedded interfaces’ methods
+  (duplicates with identical signatures are deduplicated).
+	- A type implements the composed interface if it implements all methods from that union.
 - A **pointer** refers to a **location in memory**.
 - In Go, everything is passed to functions **by value**.
 	- That means you always copy the argument.
