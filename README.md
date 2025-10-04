@@ -287,6 +287,7 @@ func (c *Cache[K, V]) removeExpired() {
 - Vertical autoscaling (VPA): resize each pod’s CPU/memory.
 ### Load Balancer
 - A Kubernetes load balancer service is a component that distributes network traffic across multiple instances of an application running in a K8S cluster
+![unnamed](https://github.com/user-attachments/assets/67e3d9eb-0bb5-4b65-9e7a-9a0007181c0f)
 
 ### AWS
 https://aws.amazon.com/free/?trk=0a74b2b7-15b3-40f0-a1a9-39d406419e28&sc_channel=ps&ef_id=EAIaIQobChMI-
