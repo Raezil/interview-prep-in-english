@@ -12,7 +12,8 @@
   - If the local queues are full → goroutines go to the global queue..
 - **Waitgroup** synchronizes work of many goroutine, It waits for completion every each of them before proceeding further.
 - **Mutex** prevents race condition - situation where many goroutines try to access shared variable, try to access critical section of the code.
-  - Only one goroutine can access critical section of the code.
+  - Only one goroutine can access critical section of the code. 
+- **sync.RWMutex** is a read–write lock: many goroutines can hold the read lock concurrently (RLock/RUnlock), but the write lock (Lock/Unlock) is exclusive and blocks both readers and writers.
 
  ### Garbage Collector
 - Starts with all objects marked as **white**.  
