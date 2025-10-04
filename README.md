@@ -285,7 +285,8 @@ func (c *Cache[K, V]) removeExpired() {
 ### Autoscaling
 - Horizontal autoscaling (HPA/KEDA): add/remove pods.
 - Vertical autoscaling (VPA): resize each pod’s CPU/memory.
-
+### Load Balancer
+- A Kubernetes load balancer service is a component that distributes network traffic across multiple instances of an application running in a K8S cluster
 
 ### AWS
 https://aws.amazon.com/free/?trk=0a74b2b7-15b3-40f0-a1a9-39d406419e28&sc_channel=ps&ef_id=EAIaIQobChMI-
