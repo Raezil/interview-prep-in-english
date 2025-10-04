@@ -38,7 +38,7 @@
 - In Go, everything is passed to functions **by value**.
 	- That means you always copy the argument.
 	- If the argument is a "handle" (e.g., a pointer, slice, map, channel, function, or interface),
- 	- you copy the handle itself, but it still points to the same underlying memory.
+ 		- you copy the handle itself, but it still points to the same underlying memory.
 
 
 ### Generics in Go
