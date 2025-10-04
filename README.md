@@ -278,7 +278,7 @@ func (c *Cache[K, V]) removeExpired() {
 ### AWS
 https://aws.amazon.com/free/?trk=0a74b2b7-15b3-40f0-a1a9-39d406419e28&sc_channel=ps&ef_id=EAIaIQobChMI-
 
-- **Stripe* handles payments by acting as an intermediary,
+- **Stripe** handles payments by acting as an intermediary,
 	- using a secure gateway to encrypt and transmit payment details from customers to the business's bank account,
 	- routing the transaction through the card network (like Visa or Mastercard) and the issuing bank (customer's bank) for authorization
 	- then relaying the approval or decline message back to the customer and depositing the funds into the business's bank account after processing fees
