@@ -4,6 +4,8 @@
 
 - **Goroutines** communicate with each other via **channels**
   - Channels can be **buffered** or **unbuffered**
+    - **Unbuffered** channels enforce a synchronous hand-off (send and receive both block until the other side is ready)
+    - **buffered** channels queue up to cap(ch) values so sends block only when full and receives block only when empty.
 - The **M:N scheduler** maps **M goroutines** onto **N OS threads**.
   - Each thread has a processor, and that processor has a local queue.
   - If the local queue is empty → the scheduler steals work from other queues to balance the load.
