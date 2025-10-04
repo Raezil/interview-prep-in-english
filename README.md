@@ -1,6 +1,6 @@
 - **Concurrency** is a technique for managing multiple tasks that are executed in an interleaved manner (on a single processor).
 - **Parallelism** is executing multiple tasks truly at the same time (on multiple cores or processors).
-- The **goroutine** stack weighs at least 2 KB of memory, while OS threads occupy about several MB of memory. The goroutine stack is dynamic and can grow and shrink.
+- The **goroutine** stack weighs at least 2 KB of memory, while OS threads weigh about several MB of memory. The goroutine stack is dynamic and can grow and shrink.
 
 - **Goroutines** communicate with each other via **channels**
   - Channels can be **buffered** or **unbuffered**
