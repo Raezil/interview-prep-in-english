@@ -71,5 +71,8 @@ They let you write functions and structs that operate on different types **witho
 - **Transport:** HTTP/2, binary Protobuf, and a strongly typed contract on both sides.
 
 
+### SQL join
+![1m55Wqo](https://github.com/user-attachments/assets/04e9fd01-15eb-4cec-8f94-21ad7a683ba9)
+
 ### Cache
 - A cache is a small, fast key→value store you put in front of a slower system (disk, DB, network, compiler, etc.) to serve repeated reads quicker.
