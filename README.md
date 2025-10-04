@@ -26,8 +26,16 @@
 - The remaining white objects are garbage and are **freed from memory**.
 
 ### Other Concepts
-- An **interface** defines a set of method signatures, **without their implementation**.  
+- An **interface** defines a set of method signatures, **without their implementation**.
+- Outside generics, **any** behaves exactly like interface{}:
+	- it can hold a value of any dynamic type.
+ 	- You still need type assertions or type switches to work with the underlying concrete type.
 - A **pointer** refers to a **location in memory**.
+- In Go, everything is passed to functions **by value**.
+	- That means you always copy the argument.
+	- If the argument is a "handle" (e.g., a pointer, slice, map, channel, function, or interface),
+ 	- you copy the handle itself, but it still points to the same underlying memory.
+
 
 ### Generics in Go
 Since **Go 1.18**, the language supports **generics**.  
