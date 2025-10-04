@@ -288,10 +288,10 @@ func (c *Cache[K, V]) removeExpired() {
 ### Load Balancer
 - A Kubernetes load balancer service is a component that distributes network traffic across multiple instances of an application running in a K8S cluster
 ![unnamed](https://github.com/user-attachments/assets/67e3d9eb-0bb5-4b65-9e7a-9a0007181c0f)
-	- Ingress:
+	- **Ingress**:
  		- Kubernetes also has an API object called Ingress.
    		- Ingress is built on top of the Kubernetes Service (to expose Ingress, you need to use the Kubernetes Service).
-     	- The main responsibility of Ingress is distributing network traffic to services according to predetermined routing rules or algorithms. 
+     	- The main responsibility of Ingress is distributing network traffic to services according to predetermined routing rules. 
    
 ### AWS
 https://aws.amazon.com/free/?trk=0a74b2b7-15b3-40f0-a1a9-39d406419e28&sc_channel=ps&ef_id=EAIaIQobChMI-
