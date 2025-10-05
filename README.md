@@ -68,6 +68,30 @@ They let you write functions and structs that operate on different types **witho
 - A map is a key → value dictionary.
 - It is not concurrency-safe — use `sync.Mutex` or `sync.Map`.
 
+# Junior Go Q&A (Cheat Sheet)
+
+* **When do you use a pointer receiver?**
+  When the method **mutates** the receiver, to **avoid copying** large structs, or to keep a **consistent method set**.
+
+* **What happens if you write to a nil map?**
+  It **panics**. Initialize first with `make(map[K]V)`.
+
+* **How do you avoid goroutine leaks?**
+  Use **`context`** or **close a channel** that goroutines `select` on; ensure every **send has a receiver** (and vice‑versa).
+
+* **How do you parse/emit JSON?**
+  `json.Unmarshal([]byte, &v)` and `json.Marshal(v)` (or `Encoder`/`Decoder`). Use tags like `json:"field,omitempty"`.
+  
+* **How do you set a timeout on an HTTP call?**
+  `ctx, cancel := context.WithTimeout(...); defer cancel()` and **pass `ctx`** to the request/client.
+
+* **Common for-loop gotcha with goroutines?**
+  **Capturing the loop variable** in a closure. Fix by **shadowing**: `v := v` inside the loop before launching the goroutine.
+
+* **Race detector?**
+  `go test -race` to catch **data races**.
+
+
 ### HTTP Methods
 - **GET / HEAD** — read-only; does not change state. `GET` returns the body; `HEAD` returns headers only.
 - **POST** — create/action; the server assigns an ID or there are side effects.
