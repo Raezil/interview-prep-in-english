@@ -1,6 +1,6 @@
 - **Tell me about yourself:**
-	- I’m Kamil, a Go-first backend engineer who likes taking complex plumbing and turning it into clean, fast developer experiences. On the open-source side I built Thunder, a minimalist framework that converts gRPC services into both REST and GraphQL, It reached 100 stars on github.
-	- Recently I’ve been heads-down helping push the Universal Tool Calling Protocol (UTCP) forward—spec work plus the official Go implementation under the UTCP org. It’s a standard that lets AI agents call tools directly over native transports, which is fun because it blends protocols, performance, and DX. 
+	- I’m Kamil, open source developer that build many projects in golang. I've built Thunder, a minimalist framework that transforms gRPC services into both REST and GraphQL, It reached 100 stars on github.
+	- Recently I’ve been heads-down helping push the Universal Tool Calling Protocol (UTCP) forward—spec work plus the official Go implementation under the UTCP org. It’s a standard that lets AI agents call tools directly over native transports.
 	- I also maintain GoEventBus, a lock-free, in-memory event bus for Go with examples and benchmarks; it grew out of my obsession with low-latency pipelines.
 
 - **Concurrency** is a technique for managing multiple tasks that are executed in an interleaved manner (on a single processor).
