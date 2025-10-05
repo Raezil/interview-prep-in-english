@@ -96,6 +96,10 @@ They let you write functions and structs that operate on different types **witho
 * **Race detector?**
   `go test -race` to catch **data races**.
 
+- **rate limiter**
+	- Think of a rate limiter as a bouncer: it controls how many “requests” get into your system over time so you don’t melt the servers or downstreams.
+ 	- A rate limiter enforces a policy like “allow up to R requests per second, with at most B queued/burst at once.”
+
 
 ### HTTP Methods
 - **GET / HEAD** — read-only; does not change state. `GET` returns the body; `HEAD` returns headers only.
@@ -151,7 +155,7 @@ They let you write functions and structs that operate on different types **witho
 
 * **Ordering:** messages are **in‑order** within an RPC. The **first error closes the stream**.
 
-
+- **interceptors** are the “middleware” of gRPC. They let you run code before and after every RPC without touching your service handlers, so you can add auth, logging, metrics, rate-limiting, retries, tracing, etc., in one place.
 
 ### Cache
 - A cache is a small, fast key→value store you put in front of a slower system (disk, DB, network, compiler, etc.) to serve repeated reads quicker.
