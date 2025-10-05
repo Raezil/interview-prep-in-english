@@ -1,5 +1,5 @@
 - **Tell me about yourself:**
-	- I’m Kamil, open source developer that build many projects in golang. I've built Thunder, a minimalist framework that transforms gRPC services into both REST and GraphQL, It reached 100 stars on github.
+	- I’m Kamil, open source developer. I've built Thunder, a minimalist framework that transforms gRPC services into both REST and GraphQL, It reached 100 stars on github.
 	- Recently I’ve been working golang implementation of UTCP. As a member of that organization I've managed to port utcp from python to golang. About utcp, It’s a standard that lets AI agents call tools directly over native transports.
 	- I also maintain GoEventBus, a lock-free, in-memory event bus for Go with examples and benchmarks; it grew out of my obsession with low-latency pipelines.
 
