@@ -45,7 +45,9 @@
 	- That means you always copy the argument.
 	- If the argument is a "handle" (e.g., a pointer, slice, map, channel, function, or interface),
  		- you copy the handle itself, but it still points to the same underlying memory.
-
+- **var vs :=**
+	- Use := inside functions for short, local variables: concise, type inferred.
+	- Use var when you need a zero value, want to specify the type, or are at package scope.
 
 ### Generics in Go
 Since **Go 1.18**, the language supports **generics**.  
