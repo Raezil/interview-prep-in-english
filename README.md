@@ -1,7 +1,3 @@
-- **Tell me about yourself:**
-	- I’m Kamil, open source developer. I've built Thunder, a minimalist framework that transforms gRPC services into both REST and GraphQL, It reached 100 stars on github.
-	- I've created GoEventBus, a lock-free, in-memory event bus for Go with examples and benchmarks;
-	- Recently I’ve been working golang implementation of UTCP. As a member of that organization I've managed to port utcp from python to golang. About utcp, It’s a new arising standard that lets AI agents call tools directly over native transports.
 
 
 - **Concurrency** is a technique for managing multiple tasks that are executed in an interleaved manner (on a single processor).
