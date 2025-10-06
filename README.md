@@ -16,7 +16,7 @@
 - **Mutex** prevents race condition - situation where many goroutines try to access shared variable, try to access critical section of the code.
   - Only one goroutine can access critical section of the code. 
 - **sync.RWMutex** is a read–write lock: many goroutines can hold the read lock concurrently (RLock/RUnlock), but the write lock (Lock/Unlock) is exclusive and blocks both readers and writers.
-sync.RWMutex stands for Read-Write Mutex — it’s like a regular sync.Mutex, but smarter when you have many readers and few writers.      
+
       
 It allows multiple readers to access data at the same time, as long as no writer is active.      
 When a writer locks it for writing, all readers and other writers must wait.
