@@ -18,8 +18,6 @@
 - **sync.RWMutex** is a read–write lock: many goroutines can hold the read lock concurrently (RLock/RUnlock), but the write lock (Lock/Unlock) is exclusive and blocks both readers and writers.
 
       
-It allows multiple readers to access data at the same time, as long as no writer is active.      
-When a writer locks it for writing, all readers and other writers must wait.
  ### Garbage Collector
 - Starts with all objects marked as **white**.  
 - **Roots** become **gray**.  
